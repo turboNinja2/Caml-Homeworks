@@ -9,7 +9,7 @@ let string_of_complex z =
 
 let complex_of_int n = {re = float_of_int(n); im = 0.} ;;
 
-let mul_int_float a b = mul (complex_of_int(a)) b ;;
+let mul_int_float a b = mul (complex_of_int a) b ;;
 
 let add_poly_complex p1 p2 = add_poly p1 p2 add ;;
 

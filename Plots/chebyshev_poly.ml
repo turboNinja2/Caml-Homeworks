@@ -4,6 +4,8 @@ module P = Plot
 
 (* Command line parameters *)
 let order = int_of_string(Sys.argv.(1)) ;;
+let x_max = float_of_string(Sys.argv.(2)) ;;
+let y_max = float_of_string(Sys.argv.(2)) ;;
 
 (* Output file name *)
 let filename = "chebyshev"^
@@ -25,8 +27,6 @@ let poly = chebyshev_poly order ;;
 let f x = eval_poly_float poly x ;;
 
 (* Plot parameters *)
-let x_max = 1. ;;
-let y_max = 1. ;;
   
 (* Ouput the graph in the SVG file *)
 let p = P.init (~-.x_max, ~-.y_max) 
