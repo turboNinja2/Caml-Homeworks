@@ -4,15 +4,17 @@ open Dense_polynomial_complex
 
 let pi = atan 1.0 *. 4.0
 
-let xpts = 100               (* Data points in x *)
-let ypts = 100               (* Data points in y *)
+let xpts = 100              (* Data points in x *)
+let ypts = 100              (* Data points in y *)
 
 let alt = [|60.0; 20.0|]
 let az = [|30.0; 60.0|]
 
 let order = int_of_string(Sys.argv.(1))
 
-let my_poly = n_derivative_complex (one::one::one::one::one::one::one::[]) order 
+let constant = float_of_string(Sys.argv.(2))
+
+let my_poly = n_derivative_complex ({re=constant; im=0.}::zero::zero::zero::one::[]) order 
 
 let title = "-log( "^(string_of_poly_complex my_poly)^" )"
 
@@ -92,8 +94,6 @@ let () =
   pllightsource 1.0 1.0 1.0;
 
     for ifshade = 3 to 3 do
-      plsdev "svg";
-      plsfnam (title^".svg");
       plinit (); (* Initialize plplot *)
 
       pladv 0;
@@ -126,3 +126,4 @@ let () =
       plend (); (* Clean up *)
     done;
   ()
+

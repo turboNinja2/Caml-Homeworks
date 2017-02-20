@@ -1,30 +1,23 @@
 open Plplot
-open Complex
-open Dense_polynomial_complex
+module P = Plot
 
-let pi = atan 1.0 *. 4.0
+let max_length = 1. ;;
 
-let xpts = 100               (* Data points in x *)
-let ypts = 100               (* Data points in y *)
+(* Toy data *)
+let chessboard_boundary x y = if ((mod_float (x+.10.)  0.5) -. 0.25) *. ((mod_float (y+.10.) 0.5) -. 0.25) > 0. then 1. else ~-.1. ;;
 
-let alt = [|60.0; 20.0|]
-let az = [|30.0; 60.0|]
+let pi = atan 1.0 *. 4.0 ;;
 
-let order = int_of_string(Sys.argv.(1))
+let xpts = 100 ;;              (* Data points in x *)
+let ypts = 100 ;;             (* Data points in y *)
 
-let my_poly = n_derivative_complex (one::one::one::one::one::one::one::[]) order 
+let alt = [|60.0; 20.0|];;
 
-let title = "-log( "^(string_of_poly_complex my_poly)^" )"
 
-(*--------------------------------------------------------------------------*\
- * cmap1_init1
- *
- * Initializes color map 1 in HLS space.
- * Basic grayscale variation from half-dark (which makes more interesting
- * looking plot compared to dark) to light.
- * An interesting variation on this:
- *      s[1] = 1.0
-\*--------------------------------------------------------------------------*)
+let az = [|30.0; 60.0|];;
+
+let title = "Original decision boundary";;
+
 
 let cmap1_init gray =
   let i = [|0.0; 1.0|] in (* left and right boundaries *)
@@ -48,9 +41,9 @@ let cmap1_init gray =
 
   plscmap1n 256;
   plscmap1l false i h l s None;
-  ()
+  ();;
 
-let levels = 10
+let levels = 10;;
 
 (*--------------------------------------------------------------------------*\
  * Does a series of 3-d plots for a given data set, with different
@@ -72,13 +65,11 @@ let () =
       fun i -> float_of_int (i - (ypts / 2)) /. float_of_int (ypts / 2)
     ) in
 
-  let f x = ~-. (log10 (0.1 +. norm2 (eval_poly_complex my_poly x))) in 
-
   for i = 0 to xpts - 1 do
     let xx = x.(i) in
     for j = 0 to ypts - 1 do
       let yy = y.(j) in
-      z.(i).(j) <- f {re = xx ; im = yy};
+      z.(i).(j) <- chessboard_boundary xx yy ;
     done
   done;
 
@@ -92,8 +83,6 @@ let () =
   pllightsource 1.0 1.0 1.0;
 
     for ifshade = 3 to 3 do
-      plsdev "svg";
-      plsfnam (title^".svg");
       plinit (); (* Initialize plplot *)
 
       pladv 0;
@@ -126,3 +115,4 @@ let () =
       plend (); (* Clean up *)
     done;
   ()
+
